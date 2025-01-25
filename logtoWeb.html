@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>شعللها - تسجيل دخول</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- خطوط وأيقونات -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    crossorigin="anonymous"
+  />
+
+  <!-- ملف التنسيق -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- شاشة الافتتاح (Opening Animation) -->
+  <div id="openingAnimation">
+    <div class="opening-text">شعللها</div>
+  </div>
+
+  <!-- شريط التنقل -->
+  <nav class="navbar">
+    <div class="logo">شعللها</div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> الرئيسية</a></li>
+      <li><a href="logtoWeb.html" class="nav-link active"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a></li>
+      <li><a href="CreateAccount.html" class="nav-link"><i class="fas fa-user-plus"></i> إنشاء حساب</a></li>
+      <li><a href="subscription.html" class="nav-link"><i class="fas fa-user-plus"></i> اشتراك</a></li>
+      <li><a href="logout.html" class="nav-link"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</a></li>
+    </ul>
+  </nav>
+
+  <!-- خلفية Blobs -->
+  <div class="background-shapes">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+
+  <!-- بانر تسجيل الدخول -->
+  <div class="banner-login">
+    <div class="banner-content">
+      <h1>اهلا بعودتك</h1>
+      <p>قم بتسجيل الدخول للاستمتاع بمشاهدة الأنميات.</p>
+    </div>
+  </div>
+
+  <!-- نموذج تسجيل الدخول -->
+  <section class="login-section" id="loginSection">
+    <h2>تسجيل دخول</h2>
+    <form id="loginForm" novalidate>
+      <div class="form-group">
+        <label for="loginEmail">البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" name="loginEmail" required placeholder="أدخل بريدك الإلكتروني">
+        <small class="error-message" id="loginEmailError"></small>
+      </div>
+      <div class="form-group">
+        <label for="loginPassword">كلمة المرور</label>
+        <input type="password" id="loginPassword" name="loginPassword" required placeholder="أدخل كلمة المرور">
+        <small class="error-message" id="loginPasswordError"></small>
+      </div>
+      <button type="submit" class="login-btn">تسجيل دخول</button>
+    </form>
+    <p>ليس لديك حساب؟ <a href="CreateAccount.html">إنشاء حساب جديد</a></p>
+  </section>
+
+  <!-- قسم رسالة تسجيل الدخول السابق -->
+  <section class="already-logged-in-section" id="alreadyLoggedInSection" style="display: none;">
+    <div class="message-box">
+      <h2>أنت مسجل بالفعل!</h2>
+      <p>يرجى <a href="logout.html">تسجيل الخروج</a> لتسجيل الدخول بحساب آخر.</p>
+    </div>
+  </section>
+
+  <!-- شاشة التحميل -->
+  <div id="loadingScreen">
+    <img src="images/loading.gif" alt="جاري التحميل">
+  </div>
+
+  <!-- حاوية الرسائل -->
+  <div id="messageContainer"></div>
+
+  <!-- تذييل -->
+  <footer class="footer">
+    <p>© 2025 شعللها - جميع الحقوق محفوظة</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>

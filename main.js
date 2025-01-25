@@ -21,62 +21,11 @@ const animes = [
           { name: "سيرفر 2", link: "https://example.com/one-piece-ep1-server3" }
         ]
       },
-      {
-        title: "الحلقة 2",
-        servers: [
-          { name: "سيرفر 1", link: "https://www.dailymotion.com/video/x81qix5" },
-          { name: "سيرفر 2", link: "https://example.com/one-piece-ep2-server3" }
-        ]
-      },
-      {
-        title: "الحلقة 3",
-        servers: [
-          { name: "سيرفر 1", link: "https://www.dailymotion.com/video/x81qix5" },
-          { name: "سيرفر 2", link: "https://example.com/one-piece-ep3-server3" }
-        ]
-      },
+      // المزيد من الحلقات...
     ],
     seasons: []
   },
-  {
-    id: 2,
-    name: "Bleach",
-    image: "https://m.media-amazon.com/images/M/MV5BOWQwOWY5NTUtMjAyZi00YjQzLTkwODgtNmQwZjU1MGIzZDhjXkEyXkFqcGc@._V1_.jpg",
-    description: "مغامرات إيتشيغو كوروساكي 死神،",
-    quality: "1080p",
-    status: "مستمر",
-    episodesCount: 1000,
-    rating: "8.8 من 10",
-    imdbRating: "8.7",
-    likes: "99+",
-    dislikes: "10-",
-    bannerBackground: "https://static1.cbrimages.com/wordpress/wp-content/uploads/2021/07/ichigo-kurosaki-and-bleach-brave-soul-banner.jpg",
-    episodes: [
-      {
-        title: "الحلقة 1",
-        servers: [
-          { name: "سيرفر 1", link: "https://www.dailymotion.com/video/x81qix5" },
-          { name: "سيرفر 2", link: "https://example.com/bleach-ep1-server3" }
-        ]
-      },
-      {
-        title: "الحلقة 2",
-        servers: [
-          { name: "سيرفر 1", link: "https://www.dailymotion.com/video/x81qix5" },
-          { name: "سيرفر 2", link: "https://example.com/bleach-ep2-server3" }
-        ]
-      },
-      {
-        title: "الحلقة 3",
-        servers: [
-          { name: "سيرفر 1", link: "https://www.dailymotion.com/video/x81qix5" },
-          { name: "سيرفر 2", link: "https://example.com/bleach-ep3-server3" }
-        ]
-      },
-    ],
-    seasons: []
-  },
-  // يمكنك إضافة المزيد من الأنميات هنا...
+  // المزيد من الأنميات...
 ];
 
 // ===================== متغيرات عامة =====================
@@ -91,6 +40,28 @@ function handleOpeningAnimation() {
       openingAnimation.style.display = 'none';
     });
   }
+}
+
+// ===================== تحديث شريط التنقل بناءً على حالة تسجيل الدخول =====================
+function updateNavbar() {
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    const href = link.getAttribute('href') || '#';
+    if (href === 'logtoWeb.html') {
+      if (isLoggedIn()) {
+        link.style.display = 'none';
+      } else {
+        link.style.display = 'block';
+      }
+    }
+    if (href === 'logout.html') {
+      if (isLoggedIn()) {
+        link.style.display = 'block';
+      } else {
+        link.style.display = 'none';
+      }
+    }
+  });
 }
 
 // ===================== الصفحة الرئيسية (index.html) =====================
@@ -114,12 +85,13 @@ function loadAnimesOnIndex() {
     const watchButton = document.createElement("button");
     watchButton.textContent = "مشاهدة";
     watchButton.addEventListener("click", () => {
-      if (isUserLoggedIn()) {
+      if (isLoggedIn()) {
         showLoading();
         setTimeout(() => {
           window.location.href = `episodes.html?id=${anime.id}`;
         }, 1200);
       } else {
+        // توجيه المستخدم إلى صفحة تسجيل الدخول
         window.location.href = "logtoWeb.html";
       }
     });
@@ -229,11 +201,11 @@ function fillEpisodes(animeData) {
       // عند الضغط: نحدد الحلقة الحالية + عرض سيرفراتها
       const playBtn = epDiv.querySelector('button');
       playBtn.addEventListener('click', () => {
-        if (isUserLoggedIn()) {
+        if (isLoggedIn()) {
           showLoading();
           setTimeout(() => {
             hideLoading();
-            showMessage("تم تشغيل: " + ep.title, "success");
+            showMessage("تم تشغيل: " + ep.title);
 
             // جعل هذه الحلقة هي الحالية
             currentEpisodeIndex = index;
@@ -243,6 +215,7 @@ function fillEpisodes(animeData) {
             fillServersForEpisode(index);
           }, 1000);
         } else {
+          // توجيه المستخدم إلى صفحة تسجيل الدخول
           window.location.href = "logtoWeb.html";
         }
       });
@@ -302,9 +275,9 @@ function setupWatchingControls(animeData) {
       const newTitle = animeData.episodes[currentEpisodeIndex].title;
       updateCurrentEpisodeLabel(newTitle);
       fillServersForEpisode(currentEpisodeIndex);
-      showMessage("انتقلت إلى " + newTitle, "success");
+      showMessage("انتقلت إلى " + newTitle);
     } else {
-      showMessage("لا توجد حلقة سابقة!", "error");
+      showMessage("لا توجد حلقة سابقة!");
     }
   });
 
@@ -316,9 +289,9 @@ function setupWatchingControls(animeData) {
       const newTitle = animeData.episodes[currentEpisodeIndex].title;
       updateCurrentEpisodeLabel(newTitle);
       fillServersForEpisode(currentEpisodeIndex);
-      showMessage("انتقلت إلى " + newTitle, "success");
+      showMessage("انتقلت إلى " + newTitle);
     } else {
-      showMessage("وصلت لنهاية الحلقات!", "info");
+      showMessage("وصلت لنهاية الحلقات!");
     }
   });
 }
@@ -329,245 +302,6 @@ function updateCurrentEpisodeLabel(title) {
 }
 
 // ===================== التعامل مع نموذج الاشتراك =====================
-function handleCreateAccountForm() {
-  const form = document.getElementById('createAccountForm');
-  if (!form) return;
-
-  const nameInput = document.getElementById('name');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const confirmPasswordInput = document.getElementById('confirmPassword');
-
-  const nameError = document.getElementById('nameError');
-  const emailError = document.getElementById('emailError');
-  const passwordError = document.getElementById('passwordError');
-  const confirmPasswordError = document.getElementById('confirmPasswordError');
-
-  const strengthBar = document.getElementById('strengthBar');
-
-  // دالة لحساب قوة كلمة المرور
-  function calculatePasswordStrength(password) {
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[\W]/.test(password)) strength++;
-    return strength;
-  }
-
-  // دالة لتحديث مؤشر القوة
-  function updateStrengthBar(password) {
-    const strength = calculatePasswordStrength(password);
-    strengthBar.className = 'strength-bar'; // إعادة تعيين الفئة
-    if (strength <= 2) {
-      strengthBar.classList.add('low');
-    } else if (strength === 3 || strength === 4) {
-      strengthBar.classList.add('medium');
-    } else if (strength >= 5) {
-      strengthBar.classList.add('high');
-    }
-  }
-
-  // دالة لعرض رسائل الخطأ
-  function showError(element, message) {
-    element.textContent = message;
-    element.style.display = 'block';
-  }
-
-  // دالة لإخفاء رسائل الخطأ
-  function hideError(element) {
-    element.textContent = '';
-    element.style.display = 'none';
-  }
-
-  // حدث إدخال كلمة المرور لتحديث مؤشر القوة
-  passwordInput.addEventListener('input', () => {
-    updateStrengthBar(passwordInput.value);
-  });
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // إعادة تعيين رسائل الخطأ
-    hideError(nameError);
-    hideError(emailError);
-    hideError(passwordError);
-    hideError(confirmPasswordError);
-
-    let isValid = true;
-
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const confirmPassword = confirmPasswordInput.value;
-
-    // التحقق من الاسم
-    if (name === '') {
-      showError(nameError, "يرجى إدخال اسمك الكامل.");
-      isValid = false;
-    }
-
-    // التحقق من البريد الإلكتروني باستخدام تعبير منتظم
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email === '') {
-      showError(emailError, "يرجى إدخال بريدك الإلكتروني.");
-      isValid = false;
-    } else if (!emailPattern.test(email)) {
-      showError(emailError, "يرجى إدخال بريد إلكتروني صالح.");
-      isValid = false;
-    } else if (isEmailRegistered(email)) {
-      showError(emailError, "البريد الإلكتروني مسجل بالفعل.");
-      isValid = false;
-    }
-
-    // التحقق من كلمة المرور
-    if (password === '') {
-      showError(passwordError, "يرجى إدخال كلمة المرور.");
-      isValid = false;
-    } else if (password.length < 8) {
-      showError(passwordError, "يجب أن تكون كلمة المرور 8 أحرف على الأقل.");
-      isValid = false;
-    }
-
-    // التحقق من تأكيد كلمة المرور
-    if (confirmPassword === '') {
-      showError(confirmPasswordError, "يرجى تأكيد كلمة المرور.");
-      isValid = false;
-    } else if (password !== confirmPassword) {
-      showError(confirmPasswordError, "كلمتا المرور غير متطابقتين.");
-      isValid = false;
-    }
-
-    if (isValid) {
-      // إنشاء حساب جديد
-      const users = getUsers();
-      users.push({ name, email, password });
-      saveUsers(users);
-
-      // تسجيل الدخول تلقائيًا بعد إنشاء الحساب
-      setUserLoggedIn(email);
-
-      // عرض شاشة التحميل ثم توجيه المستخدم إلى صفحة الاشتراك
-      showLoading();
-      setTimeout(() => {
-        hideLoading();
-        showMessage("تم إنشاء الحساب بنجاح! تم توجيهك إلى صفحة الاشتراك.", "success");
-        form.reset();
-        strengthBar.className = 'strength-bar'; // إعادة تعيين مؤشر القوة
-        setTimeout(() => {
-          window.location.href = "subscription.html";
-        }, 2000);
-      }, 1500);
-    }
-  });
-}
-
-// ===================== التعامل مع نموذج تسجيل الدخول =====================
-function handleLoginForm() {
-  const form = document.getElementById('loginForm');
-  if (!form) return;
-
-  const emailInput = document.getElementById('loginEmail');
-  const passwordInput = document.getElementById('loginPassword');
-
-  const emailError = document.getElementById('loginEmailError');
-  const passwordError = document.getElementById('loginPasswordError');
-
-  // دالة لعرض رسائل الخطأ
-  function showError(element, message) {
-    element.textContent = message;
-    element.style.display = 'block';
-  }
-
-  // دالة لإخفاء رسائل الخطأ
-  function hideError(element) {
-    element.textContent = '';
-    element.style.display = 'none';
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // إعادة تعيين رسائل الخطأ
-    hideError(emailError);
-    hideError(passwordError);
-
-    let isValid = true;
-
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-
-    // التحقق من البريد الإلكتروني
-    if (email === '') {
-      showError(emailError, "يرجى إدخال بريدك الإلكتروني.");
-      isValid = false;
-    }
-
-    // التحقق من كلمة المرور
-    if (password === '') {
-      showError(passwordError, "يرجى إدخال كلمة المرور.");
-      isValid = false;
-    }
-
-    if (isValid) {
-      const users = getUsers();
-      const user = users.find(user => user.email === email && user.password === password);
-
-      if (user) {
-        // تسجيل الدخول
-        setUserLoggedIn(email);
-
-        // عرض شاشة التحميل ثم توجيه المستخدم إلى صفحة الاشتراك
-        showLoading();
-        setTimeout(() => {
-          hideLoading();
-          showMessage("تم تسجيل الدخول بنجاح! تم توجيهك إلى صفحة الاشتراك.", "success");
-          form.reset();
-          setTimeout(() => {
-            window.location.href = "subscription.html";
-          }, 2000);
-        }, 1500);
-      } else {
-        showError(passwordError, "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
-      }
-    }
-  });
-}
-
-// ===================== التحقق من تسجيل الدخول =====================
-function isUserLoggedIn() {
-  return localStorage.getItem('loggedInUser') !== null;
-}
-
-// ===================== تسجيل الدخول =====================
-function setUserLoggedIn(email) {
-  localStorage.setItem('loggedInUser', email);
-}
-
-// ===================== تسجيل الخروج =====================
-function setUserLoggedOut() {
-  localStorage.removeItem('loggedInUser');
-}
-
-// ===================== الحصول على قائمة المستخدمين =====================
-function getUsers() {
-  const users = localStorage.getItem('users');
-  return users ? JSON.parse(users) : [];
-}
-
-// ===================== حفظ قائمة المستخدمين =====================
-function saveUsers(users) {
-  localStorage.setItem('users', JSON.stringify(users));
-}
-
-// ===================== التحقق من تسجيل البريد الإلكتروني =====================
-function isEmailRegistered(email) {
-  const users = getUsers();
-  return users.some(user => user.email === email);
-}
-
-// ===================== التعامل مع نموذج الاشتراك =====================
 function handleSubscriptionForm() {
   const form = document.getElementById('subscriptionForm');
   if (!form) return;
@@ -679,21 +413,21 @@ function handleSubscriptionForm() {
     }
 
     if (isValid) {
-      // إنشاء حساب جديد
+      // تسجيل الحساب في localStorage
       const users = getUsers();
       users.push({ name, email, password });
-      saveUsers(users);
+      localStorage.setItem('users', JSON.stringify(users));
 
       // تسجيل الدخول تلقائيًا بعد إنشاء الحساب
-      setUserLoggedIn(email);
+      localStorage.setItem('loggedInUser', email);
 
-      // عرض شاشة التحميل ثم توجيه المستخدم إلى صفحة الاشتراك
       showLoading();
       setTimeout(() => {
         hideLoading();
-        showMessage("تم إنشاء الحساب بنجاح! تم توجيهك إلى صفحة الاشتراك.", "success");
+        showMessage("تم إنشاء الحساب بنجاح! تم تسجيل الدخول تلقائيًا.", "success");
         form.reset();
         strengthBar.className = 'strength-bar'; // إعادة تعيين مؤشر القوة
+        // توجيه المستخدم إلى صفحة الاشتراك بعد إنشاء الحساب
         setTimeout(() => {
           window.location.href = "subscription.html";
         }, 2000);
@@ -741,161 +475,8 @@ function handleLoginForm() {
     if (email === '') {
       showError(emailError, "يرجى إدخال بريدك الإلكتروني.");
       isValid = false;
-    }
-
-    // التحقق من كلمة المرور
-    if (password === '') {
-      showError(passwordError, "يرجى إدخال كلمة المرور.");
-      isValid = false;
-    }
-
-    if (isValid) {
-      const users = getUsers();
-      const user = users.find(user => user.email === email && user.password === password);
-
-      if (user) {
-        // تسجيل الدخول
-        setUserLoggedIn(email);
-
-        // عرض شاشة التحميل ثم توجيه المستخدم إلى صفحة الاشتراك
-        showLoading();
-        setTimeout(() => {
-          hideLoading();
-          showMessage("تم تسجيل الدخول بنجاح! تم توجيهك إلى صفحة الاشتراك.", "success");
-          form.reset();
-          setTimeout(() => {
-            window.location.href = "subscription.html";
-          }, 2000);
-        }, 1500);
-      } else {
-        showError(passwordError, "البريد الإلكتروني أو كلمة المرور غير صحيحة.");
-      }
-    }
-  });
-}
-
-// ===================== التحقق من تسجيل الدخول =====================
-function isUserLoggedIn() {
-  return localStorage.getItem('loggedInUser') !== null;
-}
-
-// ===================== تسجيل الدخول =====================
-function setUserLoggedIn(email) {
-  localStorage.setItem('loggedInUser', email);
-}
-
-// ===================== تسجيل الخروج =====================
-function setUserLoggedOut() {
-  localStorage.removeItem('loggedInUser');
-}
-
-// ===================== الحصول على قائمة المستخدمين =====================
-function getUsers() {
-  const users = localStorage.getItem('users');
-  return users ? JSON.parse(users) : [];
-}
-
-// ===================== حفظ قائمة المستخدمين =====================
-function saveUsers(users) {
-  localStorage.setItem('users', JSON.stringify(users));
-}
-
-// ===================== التحقق من تسجيل البريد الإلكتروني =====================
-function isEmailRegistered(email) {
-  const users = getUsers();
-  return users.some(user => user.email === email);
-}
-
-// ===================== التعامل مع نموذج الاشتراك =====================
-function handleSubscriptionForm() {
-  const form = document.getElementById('subscriptionForm');
-  if (!form) return;
-
-  const nameInput = document.getElementById('name');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const confirmPasswordInput = document.getElementById('confirmPassword');
-
-  const nameError = document.getElementById('nameError');
-  const emailError = document.getElementById('emailError');
-  const passwordError = document.getElementById('passwordError');
-  const confirmPasswordError = document.getElementById('confirmPasswordError');
-
-  const strengthBar = document.getElementById('strengthBar');
-
-  // دالة لحساب قوة كلمة المرور
-  function calculatePasswordStrength(password) {
-    let strength = 0;
-    if (password.length >= 8) strength++;
-    if (/[A-Z]/.test(password)) strength++;
-    if (/[a-z]/.test(password)) strength++;
-    if (/[0-9]/.test(password)) strength++;
-    if (/[\W]/.test(password)) strength++;
-    return strength;
-  }
-
-  // دالة لتحديث مؤشر القوة
-  function updateStrengthBar(password) {
-    const strength = calculatePasswordStrength(password);
-    strengthBar.className = 'strength-bar'; // إعادة تعيين الفئة
-    if (strength <= 2) {
-      strengthBar.classList.add('low');
-    } else if (strength === 3 || strength === 4) {
-      strengthBar.classList.add('medium');
-    } else if (strength >= 5) {
-      strengthBar.classList.add('high');
-    }
-  }
-
-  // دالة لعرض رسائل الخطأ
-  function showError(element, message) {
-    element.textContent = message;
-    element.style.display = 'block';
-  }
-
-  // دالة لإخفاء رسائل الخطأ
-  function hideError(element) {
-    element.textContent = '';
-    element.style.display = 'none';
-  }
-
-  // حدث إدخال كلمة المرور لتحديث مؤشر القوة
-  passwordInput.addEventListener('input', () => {
-    updateStrengthBar(passwordInput.value);
-  });
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    // إعادة تعيين رسائل الخطأ
-    hideError(nameError);
-    hideError(emailError);
-    hideError(passwordError);
-    hideError(confirmPasswordError);
-
-    let isValid = true;
-
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const confirmPassword = confirmPasswordInput.value;
-
-    // التحقق من الاسم
-    if (name === '') {
-      showError(nameError, "يرجى إدخال اسمك الكامل.");
-      isValid = false;
-    }
-
-    // التحقق من البريد الإلكتروني باستخدام تعبير منتظم
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (email === '') {
-      showError(emailError, "يرجى إدخال بريدك الإلكتروني.");
-      isValid = false;
-    } else if (!emailPattern.test(email)) {
-      showError(emailError, "يرجى إدخال بريد إلكتروني صالح.");
-      isValid = false;
-    } else if (isEmailRegistered(email)) {
-      showError(emailError, "البريد الإلكتروني مسجل بالفعل.");
+    } else if (!isEmailRegistered(email)) {
+      showError(emailError, "البريد الإلكتروني غير مسجل.");
       isValid = false;
     }
 
@@ -903,41 +484,92 @@ function handleSubscriptionForm() {
     if (password === '') {
       showError(passwordError, "يرجى إدخال كلمة المرور.");
       isValid = false;
-    } else if (password.length < 8) {
-      showError(passwordError, "يجب أن تكون كلمة المرور 8 أحرف على الأقل.");
-      isValid = false;
-    }
-
-    // التحقق من تأكيد كلمة المرور
-    if (confirmPassword === '') {
-      showError(confirmPasswordError, "يرجى تأكيد كلمة المرور.");
-      isValid = false;
-    } else if (password !== confirmPassword) {
-      showError(confirmPasswordError, "كلمتا المرور غير متطابقتين.");
+    } else if (!isPasswordCorrect(email, password)) {
+      showError(passwordError, "كلمة المرور غير صحيحة.");
       isValid = false;
     }
 
     if (isValid) {
-      // إنشاء حساب جديد
-      const users = getUsers();
-      users.push({ name, email, password });
-      saveUsers(users);
+      // تسجيل الدخول
+      localStorage.setItem('loggedInUser', email);
 
-      // تسجيل الدخول تلقائيًا بعد إنشاء الحساب
-      setUserLoggedIn(email);
-
-      // عرض شاشة التحميل ثم توجيه المستخدم إلى صفحة الاشتراك
       showLoading();
       setTimeout(() => {
         hideLoading();
-        showMessage("تم إنشاء الحساب بنجاح! تم توجيهك إلى صفحة الاشتراك.", "success");
+        showMessage("تم تسجيل الدخول بنجاح!", "success");
         form.reset();
-        strengthBar.className = 'strength-bar'; // إعادة تعيين مؤشر القوة
         setTimeout(() => {
           window.location.href = "subscription.html";
         }, 2000);
       }, 1500);
     }
+  });
+
+  // التحقق مما إذا كان المستخدم مسجلاً دخوله بالفعل
+  if (isLoggedIn()) {
+    // إخفاء نموذج تسجيل الدخول
+    document.getElementById('loginSection').style.display = 'none';
+    // عرض رسالة بأنه مسجل بالفعل
+    document.getElementById('alreadyLoggedInSection').style.display = 'block';
+  }
+}
+
+// ===================== تسجيل الخروج =====================
+function logout() {
+  localStorage.removeItem('loggedInUser');
+  // عرض رسالة تسجيل الخروج
+  showMessage("تم تسجيل الخروج بنجاح!", "success");
+  // توجيه المستخدم إلى صفحة تسجيل الدخول بعد فترة قصيرة
+  setTimeout(() => {
+    window.location.href = "logtoWeb.html";
+  }, 2000); // بعد 2 ثانية
+}
+
+// ===================== إدارة المستخدمين =====================
+
+// الحصول على قائمة المستخدمين من localStorage
+function getUsers() {
+  const users = localStorage.getItem('users');
+  return users ? JSON.parse(users) : [];
+}
+
+// التحقق مما إذا كان البريد الإلكتروني مسجلاً بالفعل
+function isEmailRegistered(email) {
+  const users = getUsers();
+  return users.some(user => user.email === email);
+}
+
+// الحصول على مستخدم بواسطة البريد الإلكتروني
+function getUserByEmail(email) {
+  const users = getUsers();
+  return users.find(user => user.email === email);
+}
+
+// التحقق من صحة كلمة المرور
+function isPasswordCorrect(email, password) {
+  const user = getUserByEmail(email);
+  return user && user.password === password;
+}
+
+// ===================== التحقق من حالة تسجيل الدخول =====================
+function isLoggedIn() {
+  return localStorage.getItem('loggedInUser') !== null;
+}
+
+// ===================== التعامل مع روابط النافبار =====================
+function handleNavbarLinks() {
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href') || '#';
+      if (href === 'logout.html') {
+        e.preventDefault();
+        logout();
+        return;
+      }
+
+      // لا شيء آخر، الروابط تعمل بشكل طبيعي
+    });
   });
 }
 
@@ -973,39 +605,22 @@ function showMessage(text, type = "info") {
   }, 3000);
 }
 
-// ===================== التعامل مع روابط النافبار =====================
-function handleNavbarLinks() {
-  const navLinks = document.querySelectorAll('.nav-link');
-  navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-      e.preventDefault();
-      const url = link.getAttribute('href') || '#';
-      if (url === '#' || url === window.location.pathname.split("/").pop()) return; // رابط وهمي أو الصفحة الحالية
-      showLoading();
-      setTimeout(() => {
-        window.location.href = url;
-      }, 1000);
-    });
-  });
-}
+// ===================== صفحة الاشتراك =====================
+function loadSubscriptionPage() {
+  if (!isLoggedIn()) {
+    window.location.href = "logtoWeb.html";
+    return;
+  }
 
-// ===================== التعامل مع زر "اشترك" في صفحة الاشتراك =====================
-function handleSubscriptionButtons() {
-  const subscribeButtons = document.querySelectorAll('.subscribe-btn');
-  subscribeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      if (isUserLoggedIn()) {
-        showLoading();
-        setTimeout(() => {
-          hideLoading();
-          showMessage("تم الاشتراك بنجاح!", "success");
-          // يمكنك إضافة منطق إضافي هنا مثل تخزين الاشتراك في localStorage
-        }, 1500);
-      } else {
-        window.location.href = "logtoWeb.html";
-      }
-    });
-  });
+  const userEmail = localStorage.getItem('loggedInUser');
+  const user = getUserByEmail(userEmail);
+  if (!user) {
+    window.location.href = "logtoWeb.html";
+    return;
+  }
+
+  // هنا يمكنك إضافة أي منطق إضافي لصفحة الاشتراك بناءً على المستخدم
+  // مثل عرض تفاصيل الحساب أو تخصيص خطط الاشتراك بناءً على مستوى المستخدم
 }
 
 // ===================== عند تحميل الصفحة =====================
@@ -1013,6 +628,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // معالجة شاشة الافتتاح
   handleOpeningAnimation();
+
+  // تحديث شريط التنقل بناءً على حالة تسجيل الدخول
+  updateNavbar();
 
   // لو الصفحة الرئيسية
   if (document.getElementById('anime-list')) {
@@ -1025,13 +643,13 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // لو صفحة الاشتراك
-  if (document.getElementById('subscriptionForm')) {
-    handleSubscriptionForm();
+  if (document.querySelector('.subscription-plans-section')) {
+    loadSubscriptionPage();
   }
 
   // لو صفحة إنشاء الحساب
   if (document.getElementById('createAccountForm')) {
-    handleCreateAccountForm();
+    handleSubscriptionForm();
   }
 
   // لو صفحة تسجيل الدخول
@@ -1039,9 +657,10 @@ window.addEventListener('DOMContentLoaded', () => {
     handleLoginForm();
   }
 
-  // لو صفحة الاشتراك مع خطط الاشتراك
-  if (document.querySelector('.subscription-section')) {
-    handleSubscriptionButtons();
+  // لو صفحة تسجيل الخروج
+  if (document.getElementById('logoutSection')) {
+    // عملية تسجيل الخروج تتم عبر `logout.html`
+    // لا حاجة لتفعيل دالة إضافية هنا
   }
 
   // روابط النافبار مع شاشة التحميل

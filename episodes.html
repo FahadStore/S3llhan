@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar">
 <head>
@@ -24,13 +23,20 @@
 </head>
 <body>
 
+  <!-- شاشة الافتتاح (Opening Animation) -->
+  <div id="openingAnimation">
+    <div class="opening-text">شعللها</div>
+  </div>
+
   <!-- شريط التنقل -->
   <nav class="navbar">
     <div class="logo">شعللها</div>
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> الرئيسية</a></li>
-      <li><a href="#" class="nav-link"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a></li>
-      <li><a href="#" class="nav-link"><i class="fas fa-user-plus"></i> اشتراك</a></li>
+      <li><a href="logtoWeb.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a></li>
+      <li><a href="CreateAccount.html" class="nav-link"><i class="fas fa-user-plus"></i> إنشاء حساب</a></li>
+      <li><a href="subscription.html" class="nav-link"><i class="fas fa-user-plus"></i> اشتراك</a></li>
+      <li><a href="logout.html" class="nav-link"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</a></li>
     </ul>
   </nav>
 
@@ -68,12 +74,12 @@
   <div class="watching-controls">
     <p>الحلقة الحالية: <span id="currentEpisodeLabel">--</span></p>
     <div class="control-buttons">
-      <button id="prevEpisodeBtn">الحلقة السابقة</button>
-      <button id="nextEpisodeBtn">الحلقة القادمة</button>
+      <button id="prevEpisodeBtn"><i class="fas fa-backward"></i> الحلقة السابقة</button>
+      <button id="nextEpisodeBtn">الحلقة القادمة <i class="fas fa-forward"></i></button>
     </div>
   </div>
 
-  <!-- **قســم التشغيل داخل الصفحة** -->
+  <!-- قسم التشغيل داخل الصفحة -->
   <section class="video-player-section">
     <h3>مشغل الفيديو</h3>
     <div id="videoContainer">
@@ -89,6 +95,7 @@
   <!-- نظام الرسائل -->
   <div id="messageContainer"></div>
 
+  <!-- تذييل -->
   <footer class="footer">
     <p>© 2025 شعللها - جميع الحقوق محفوظة</p>
   </footer>

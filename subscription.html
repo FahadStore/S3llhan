@@ -32,8 +32,10 @@
     <div class="logo">شعللها</div>
     <ul class="nav-links">
       <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> الرئيسية</a></li>
-      <li><a href="login.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a></li>
-      <li><a href="subscription.html" class="active nav-link"><i class="fas fa-user-plus"></i> اشتراك</a></li>
+      <li><a href="logtoWeb.html" class="nav-link"><i class="fas fa-sign-in-alt"></i> تسجيل دخول</a></li>
+      <li><a href="CreateAccount.html" class="nav-link"><i class="fas fa-user-plus"></i> إنشاء حساب</a></li>
+      <li><a href="subscription.html" class="nav-link"><i class="fas fa-user-plus"></i> اشتراك</a></li>
+      <li><a href="logout.html" class="nav-link"><i class="fas fa-sign-out-alt"></i> تسجيل خروج</a></li>
     </ul>
     <!-- عمود ثالث فارغ -->
   </nav>
@@ -48,43 +50,49 @@
   <!-- بانر الاشتراك -->
   <div class="banner-subscription">
     <div class="banner-content">
-      <h1>انضم إلينا اليوم!</h1>
+      <h1>اختر خطة اشتراكك</h1>
       <p>استمتع بمشاهدة الأنميات المفضلة لديك بأفضل جودة وبدون إعلانات.</p>
     </div>
   </div>
 
-  <!-- نموذج الاشتراك -->
-  <section class="subscription-section">
-    <div class="subscription-container">
-      <h2>اشترك الآن</h2>
-      <form id="subscriptionForm" novalidate>
-        <div class="form-group">
-          <label for="name">الاسم الكامل</label>
-          <input type="text" id="name" name="name" required placeholder="أدخل اسمك الكامل">
-          <small class="error-message" id="nameError"></small>
-        </div>
-        <div class="form-group">
-          <label for="email">البريد الإلكتروني</label>
-          <input type="email" id="email" name="email" required placeholder="أدخل بريدك الإلكتروني">
-          <small class="error-message" id="emailError"></small>
-        </div>
-        <div class="form-group">
-          <label for="password">كلمة المرور</label>
-          <input type="password" id="password" name="password" required placeholder="أدخل كلمة المرور">
-          <div class="password-strength">
-            <span>قوة كلمة المرور:</span>
-            <div class="strength-bar" id="strengthBar"></div>
-          </div>
-          <small class="error-message" id="passwordError"></small>
-        </div>
-        <div class="form-group">
-          <label for="confirmPassword">تأكيد كلمة المرور</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="أعد إدخال كلمة المرور">
-          <small class="error-message" id="confirmPasswordError"></small>
-        </div>
-        <button type="submit" class="subscribe-btn">اشتراك</button>
-      </form>
-      <p>لديك حساب بالفعل؟ <a href="login.html">تسجيل الدخول</a></p>
+  <!-- خطط الاشتراك -->
+  <section class="subscription-plans-section">
+    <div class="subscription-plans-container">
+      <div class="plan-card">
+        <h3>الخطة الأساسية</h3>
+        <p class="price">50 ريال سعودي / شهر</p>
+        <ul>
+          <li>مشاهدة بدقة 720p</li>
+          <li>إعلانات محدودة</li>
+          <li>دعم فني أساسي</li>
+        </ul>
+        <button class="choose-plan-btn" data-plan="basic">اختر الخطة</button>
+      </div>
+
+      <div class="plan-card">
+        <h3>الخطة المتقدمة</h3>
+        <p class="price">100 ريال سعودي / شهر</p>
+        <ul>
+          <li>مشاهدة بدقة 1080p</li>
+          <li>بدون إعلانات</li>
+          <li>دعم فني مميز</li>
+          <li>وصول مبكر للحلقات</li>
+        </ul>
+        <button class="choose-plan-btn" data-plan="premium">اختر الخطة</button>
+      </div>
+
+      <div class="plan-card">
+        <h3>الخطة السنوية</h3>
+        <p class="price">1000 ريال سعودي / سنة</p>
+        <ul>
+          <li>مشاهدة بدقة 4K</li>
+          <li>بدون إعلانات</li>
+          <li>دعم فني مميز</li>
+          <li>وصول مبكر للحلقات</li>
+          <li>مشاركة حساب مع 3 أجهزة</li>
+        </ul>
+        <button class="choose-plan-btn" data-plan="annual">اختر الخطة</button>
+      </div>
     </div>
   </section>
 
